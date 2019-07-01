@@ -1,7 +1,7 @@
-FROM alpine as builder
+FROM alpine as proto-builder
 
 ENV PROTOBUF_VERSION="3.8.0"
-ENV PROTOBUF_URL=https://github.com/google/protobuf/archive/v${PROTOBUF_VERSION}.tar.gz
+ENV PROTOBUF_URL=https://github.com/protocolbuffers/protobuf/archive/v${PROTOBUF_VERSION}.tar.gz
 
 RUN apk add --quiet --no-cache autoconf automake build-base libtool
 RUN wget -q ${PROTOBUF_URL} -O - | tar -xz -C /tmp
@@ -22,7 +22,7 @@ RUN apk add --quiet --no-cache \
       openjdk8 \
       pcre-dev
 
-COPY --from=builder /usr/local/bin/protoc /usr/local/bin/protoc
+COPY --from=proto-builder /usr/local/bin/protoc /usr/local/bin/protoc
 
 RUN go get -u -ldflags="-s -w" github.com/golang/protobuf/protoc-gen-go && \
     mv /go/bin/protoc-gen-go /usr/local/bin/ && \

@@ -1,6 +1,6 @@
 FROM alpine as proto-builder
 
-ENV PROTOBUF_VERSION="3.8.0"
+ENV PROTOBUF_VERSION="3.9.1"
 ENV PROTOBUF_URL=https://github.com/protocolbuffers/protobuf/archive/v${PROTOBUF_VERSION}.tar.gz
 
 RUN apk add --quiet --no-cache autoconf automake build-base libtool

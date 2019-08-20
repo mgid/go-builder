@@ -1,8 +1,8 @@
-## Go-builder
+# Go-builder
 
 Image to build Golang applications
 
-#### Included
+## Included
 
 * Latest Golang
 * Protobuf compiler with protoc-gen-go

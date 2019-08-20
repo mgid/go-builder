@@ -6,4 +6,5 @@ Image to build Golang applications
 
 * Latest Golang
 * Protobuf compiler with protoc-gen-go
+* GolangCI-Lint
 * Apache Ant

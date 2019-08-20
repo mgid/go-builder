@@ -24,6 +24,8 @@ RUN apk add --quiet --no-cache \
 
 COPY --from=proto-builder /usr/local/bin/protoc /usr/local/bin/protoc
 
+RUN wget -O - -q https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b /usr/local/bin v1.17.1
+
 RUN go get -u -ldflags="-s -w" github.com/golang/protobuf/protoc-gen-go && \
     mv /go/bin/protoc-gen-go /usr/local/bin/ && \
     rm -rf /go/bin/* /go/src/* /root/.cache

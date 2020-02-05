@@ -1,6 +1,6 @@
 FROM alpine as proto-builder
 
-ENV PROTOBUF_VERSION="3.9.1"
+ENV PROTOBUF_VERSION="3.11.3"
 ENV PROTOBUF_URL=https://github.com/protocolbuffers/protobuf/archive/v${PROTOBUF_VERSION}.tar.gz
 
 RUN apk add --quiet --no-cache autoconf automake build-base libtool zlib-dev
@@ -22,9 +22,11 @@ RUN apk add --quiet --no-cache \
       openjdk8 \
       pcre-dev
 
-COPY --from=proto-builder /usr/local/bin/protoc /usr/local/bin/protoc
-
 RUN wget -O - -q https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b /usr/local/bin
+
+COPY --from=proto-builder /usr/local/include /usr/local/include
+COPY --from=proto-builder /usr/local/lib /usr/local/lib
+COPY --from=proto-builder /usr/local/bin/protoc /usr/local/bin/protoc
 
 RUN go get -u -ldflags="-s -w" github.com/golang/protobuf/protoc-gen-go && \
     mv /go/bin/protoc-gen-go /usr/local/bin/ && \

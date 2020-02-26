@@ -1,6 +1,6 @@
 FROM alpine as proto-builder
 
-ENV PROTOBUF_VERSION="3.11.3"
+ENV PROTOBUF_VERSION="3.11.4"
 ENV PROTOBUF_URL=https://github.com/protocolbuffers/protobuf/archive/v${PROTOBUF_VERSION}.tar.gz
 
 RUN apk add --quiet --no-cache autoconf automake build-base libtool zlib-dev

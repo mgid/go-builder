@@ -1,6 +1,10 @@
+ARG GO_VERSION="1.14.0"
+ARG LINTER_VERSION="v1.24.0"
+ARG PROTOBUF_VERSION="3.11.4"
+
 FROM alpine as proto-builder
 
-ENV PROTOBUF_VERSION="3.11.4"
+ARG PROTOBUF_VERSION
 ENV PROTOBUF_URL=https://github.com/protocolbuffers/protobuf/archive/v${PROTOBUF_VERSION}.tar.gz
 
 RUN apk add --quiet --no-cache autoconf automake build-base libtool zlib-dev
@@ -10,8 +14,10 @@ RUN cd /tmp/protobuf-* && \
     ./configure --disable-shared --enable-static && \
     make --silent -j `nproc` install-strip
 
+FROM golang:${GO_VERSION}-alpine
 
-FROM golang:alpine
+ARG GO_VERSION
+ARG LINTER_VERSION
 
 RUN apk add --quiet --no-cache \
       apache-ant \
@@ -22,7 +28,7 @@ RUN apk add --quiet --no-cache \
       openjdk8 \
       pcre-dev
 
-RUN wget -O - -q https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b /usr/local/bin
+RUN wget -O - -q https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b /usr/local/bin ${LINTER_VERSION}
 
 COPY --from=proto-builder /usr/local /usr/local
 

@@ -1,6 +1,6 @@
-ARG GO_VERSION="1.14.3"
+ARG GO_VERSION="1.14.4"
 ARG LINTER_VERSION="v1.27.0"
-ARG PROTOBUF_VERSION="3.11.4"
+ARG PROTOBUF_VERSION="3.12.3"
 
 FROM alpine as proto-builder
 
@@ -33,5 +33,6 @@ RUN wget -O - -q https://raw.githubusercontent.com/golangci/golangci-lint/master
 COPY --from=proto-builder /usr/local /usr/local
 
 RUN go get -u -ldflags="-s -w" github.com/golang/protobuf/protoc-gen-go && \
-    mv /go/bin/protoc-gen-go /usr/local/bin/ && \
+    go get -u -ldflags="-s -w" google.golang.org/grpc/cmd/protoc-gen-go-grpc && \
+    mv /go/bin/* /usr/local/bin/ && \
     rm -rf /go/bin/* /go/src/* /root/.cache
